@@ -32,6 +32,7 @@ public class Shop {
 	final static double TAX_RATE = 1.04;
 
 	public Shop() {
+		//constructor like employee
 		this.dao = new DaoImplFile();
 		inventory = new ArrayList<Product>();
 		sales = new ArrayList<Sale>();
@@ -291,13 +292,12 @@ public class Shop {
 //			e.printStackTrace();
 //		}
 		
-		 // Llama al método dao.getInventory() para obtener la lista de productos
+		 // Llama al método dao.getInventory() 
 	    ArrayList<Product> products = dao.getInventory();
-	    
-	    // Verificar que la lista de productos no esté vacía y añadirlos al inventario
+	
 	    if (products != null && !products.isEmpty()) {
 	        for (Product product : products) {
-	            addProduct(product); // Añadir cada producto al inventario de la tienda
+	            addProduct(product); 
 	        }
 	        System.out.println("Inventario cargado correctamente.");
 	    } else {
@@ -310,7 +310,6 @@ public class Shop {
 	
 	
 	public boolean writeInventory() {
-	    // Invocar el método dao.writeInventory pasándole el inventario actual de la tienda
 	    return dao.writeInventory(this.inventory);
 	}
 		
@@ -521,7 +520,7 @@ public class Shop {
 			fw = new FileWriter(f, true);
 			PrintWriter pw = new PrintWriter(fw);
 			
-			// write line by line
+			
 			int counterSale=1;
 			for (Sale sale : sales) {				
 				// format first line TO BE -> 1;Client=PERE;Date=29-02-2024 12:49:50;
