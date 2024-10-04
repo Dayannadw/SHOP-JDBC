@@ -1,0 +1,9 @@
+0;Name:patata;Price:4,00€;Stock:3;
+0;Name:patata;Price:4,00€;Stock:3;
+0;Name:Pan;Price:6,00€;Stock:2;
+
+0;Name:Manzana;Price:20,00€;Stock:10;
+0;Name:Fresa;Price:10,00€;Stock:20;
+0;Name:Manzana;Price:20,00€;Stock:10;
+0;Name:Fresa;Price:10,00€;Stock:22;
+0;Name:cocacola;Price:4,00€;Stock:20;
