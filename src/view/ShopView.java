@@ -10,7 +10,7 @@ import utils.Constants;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JOptionPane; // Importar JOptionPane para mostrar diálogos
+import javax.swing.JOptionPane; 
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
@@ -28,8 +28,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
     private JButton btnAddProduct;
     private JButton btnAddStock;
     private JButton btnRemoveProduct;
-    private JButton btnExportInventory; // Nuevo botón para exportar inventario
-
+    private JButton btnExportInventory; 
     public Shop getShop() {
         return shop;
     }
@@ -147,7 +146,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
         if (e.getKeyChar() == '9') {
             this.openProductView(Constants.OPTION_REMOVE_PRODUCT);
         }
-        if (e.getKeyChar() == '0') { // Nueva opción para exportar inventario
+        if (e.getKeyChar() == '0') { 
             this.exportInventory();
         }
     }
@@ -172,7 +171,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
         if (e.getSource() == btnRemoveProduct) {
             this.openProductView(Constants.OPTION_REMOVE_PRODUCT);
         }
-        if (e.getSource() == btnExportInventory) { // Manejo del botón de exportar inventario
+        if (e.getSource() == btnExportInventory) { 
             this.exportInventory();
         }
     }
@@ -181,12 +180,12 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
      * Método para exportar inventario
      */
     public void exportInventory() {
-        boolean success = shop.writeInventory(); // Invocar el método writeInventory
+        boolean success = shop.writeInventory(); 
         if (success) {
-            // Mostrar panel de confirmación
+         
             JOptionPane.showMessageDialog(this, "Inventario exportado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            // Mostrar panel de error
+            
             JOptionPane.showMessageDialog(this, "Hubo un problema al exportar el inventario.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }

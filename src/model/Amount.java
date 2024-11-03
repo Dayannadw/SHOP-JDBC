@@ -4,7 +4,7 @@ import java.text.DecimalFormat;
 
 public class Amount {
 	private double value;	
-	private String currency="€";
+	private static String currency="€";
 	
 	private static final DecimalFormat df = new DecimalFormat("0.00");
 	
@@ -18,7 +18,11 @@ public class Amount {
 	}
 
 	public void setValue(double value) {
+		
 		this.value = value;
+	}
+	public static String getCurrency() {
+		return currency;
 	}
 
 	@Override
