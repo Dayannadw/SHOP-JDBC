@@ -26,13 +26,13 @@ public class SaxReader extends DefaultHandler {
     @Override
     public void startDocument() throws SAXException {
       
-        System.out.println("Starting document parsing...");
+        System.out.println("Starting...");
     }
 
     @Override
     public void endDocument() throws SAXException {
        
-        System.out.println("Finished document parsing.");
+        System.out.println("Finished.");
     }
 
     @Override
