@@ -33,7 +33,6 @@ public class ProductView extends JDialog implements ActionListener {
         this.option = option;
         this.shop = shop;
         
-        // Crear los componentes dentro del constructor
         setBounds(100, 100, 450, 300);
         getContentPane().setLayout(new BorderLayout());
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -60,7 +59,7 @@ public class ProductView extends JDialog implements ActionListener {
         stockTextField.setColumns(10);
 
         priceLabel = new JLabel("Precio:");
-        priceLabel.setBounds(92, 125, 134, 13);  // Ubicación del precio
+        priceLabel.setBounds(92, 125, 134, 13);  
         contentPanel.add(priceLabel);
 
         priceTextField = new JTextField();
@@ -68,10 +67,10 @@ public class ProductView extends JDialog implements ActionListener {
         contentPanel.add(priceTextField);
         priceTextField.setColumns(10);
 
-        // Cambiar visibilidad de los campos según la opción
+        
         selectOption(option);
 
-        // Botones
+     
         JPanel buttonPane = new JPanel();
         buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
         getContentPane().add(buttonPane, BorderLayout.SOUTH);
@@ -90,16 +89,16 @@ public class ProductView extends JDialog implements ActionListener {
         }
     }
 
-    // Ajustar visibilidad de los componentes según la opción seleccionada
+    
     public void selectOption(int option) {
         if (option == 2) {
-            // Opción 2: Añadir producto (debe mostrar todo)
+            
         } else if (option == 3) {
-            // Opción 3: Añadir stock (no muestra precio)
+            
             priceLabel.setVisible(false);
             priceTextField.setVisible(false);
         } else if (option == 9) {
-            // Opción 9: Eliminar producto (oculta precio y stock)
+           
             priceLabel.setVisible(false);
             priceTextField.setVisible(false);
             stockLabel.setVisible(false);
@@ -123,6 +122,9 @@ public class ProductView extends JDialog implements ActionListener {
         }
     }
 
+    
+    
+    //ADD PRODUCT 
     public void addProduct() {
         try {
             String productName = productTextField.getText();
@@ -142,6 +144,7 @@ public class ProductView extends JDialog implements ActionListener {
         }
     }
 
+    //ADD STOCK
     public void addStock() {
         try {
             String productName = productTextField.getText();
@@ -159,7 +162,8 @@ public class ProductView extends JDialog implements ActionListener {
             JOptionPane.showMessageDialog(this, "Error.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
+    
+    //DELETE 
     public void deleteProduct() {
         try {
             String productName = productTextField.getText();
