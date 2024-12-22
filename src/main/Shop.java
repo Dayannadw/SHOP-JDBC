@@ -6,9 +6,7 @@ import model.Amount;
 import model.Client;
 import model.Employee;
 import dao.Dao;
-import dao.DaoImplFile;
-import dao.DaoImplXml;
-import dao.DaoImplFile;
+import dao.DaoImplJDBC;
 import xml.DomWriter;
 import xml.SaxReader;
 import java.lang.Exception; 
@@ -37,15 +35,20 @@ public class Shop {
 	private int numberSales;
 	//Create shop.dao DaoImplFile
 	//private DaoImplFile dao; 
-	private DaoImplXml dao;
+	private DaoImplJDBC dao;
+	
 	
 	final static double TAX_RATE = 1.04;
 
 	public Shop() {
 		//constructor like employee
-		this.dao = new DaoImplXml();
+		//this.dao = new DaoImplXml();
+		this.dao = new DaoImplJDBC();
 		inventory = new ArrayList<Product>();
 		sales = new ArrayList<Sale>();
+
+
+	
 	}
 	
 	
@@ -115,7 +118,7 @@ public class Shop {
 		
 		
 		// load inventory from external data
-		shop.loadInventory();
+		//shop.loadInventory();
 		
 		// init session as employee
 		shop.initSession();
@@ -176,8 +179,7 @@ public class Shop {
 				break;
 
 			case 9:
-				shop.removeProduct();
-				break;
+				shop.deleteProduct();
 
 			case 10:
 				System.out.println("Cerrando programa ...");
@@ -188,6 +190,9 @@ public class Shop {
 		} while (!exit);
 
 	}
+
+	
+
 
 	private void initSession() {
 		// TODO Auto-generated method stub
@@ -238,22 +243,24 @@ public class Shop {
 	 * read inventory from file
 	 */
 	private void readInventory() {
-	try {
-        ArrayList<Product> products = dao.getInventory();
-        if (products.isEmpty()) {
-            System.out.println("No se ha encontrado inventario en los datos.");
-        } else {
-            inventory.addAll(products); 
-            System.out.println("Inventario cargado correctamente.");
-        }
-    } catch (Exception e) {
-        e.printStackTrace();
-    	}
+//	try {
+//        ArrayList<Product> products = dao.getInventory();
+//        if (products.isEmpty()) {
+//            System.out.println("No se ha encontrado inventario en los datos.");
+//        } else {
+//            inventory.addAll(products); 
+//            System.out.println("Inventario cargado correctamente.");
+//        }
+//    } catch (Exception e) {
+//        e.printStackTrace();
+//    	}
+		
+		inventory = dao.getInventory(); 
 	}
     
 	
 	public boolean writeInventory() {
-	    return dao.writeInventory(this.inventory);
+	    return dao.writeInventory(inventory);
 	}
 		
 	
@@ -281,7 +288,7 @@ public class Shop {
 		System.out.print("Stock: ");
 		int stock = scanner.nextInt();
 
-		addProduct(new Product(name, new Amount(wholesalerPrice), true, stock));
+		//addProduct(new Product(name, new Amount(wholesalerPrice), true, stock));
 	}
 
 	/**
@@ -330,6 +337,11 @@ public class Shop {
 		} else {
 			System.out.println("No se ha encontrado el producto con nombre " + name);
 		}
+	}
+	
+	//add sotck  UPDATE STOCK 
+	public void updateProduct(Product product) {
+		dao.updateProduct(product);
 	}
 
 	/**
@@ -512,6 +524,8 @@ public class Shop {
 		System.out.println(totalAmount);
 	}
 
+	
+	//ADD PRODUCT 
 	/**
 	 * add a product to inventory
 	 * 
@@ -522,8 +536,10 @@ public class Shop {
 			System.out.println("No se pueden añadir más productos, se ha alcanzado el máximo de " + inventory.size());
 			return;
 		}
-		inventory.add(product);
-		numberProducts++;
+		//inventory.add(product);
+		
+		dao.addProduct(product);
+		
 	}
 	
 	
@@ -539,6 +555,29 @@ public class Shop {
 		}
 
 	}
+	public void deleteProduct() {
+		Scanner sc = new Scanner(System.in);
+
+		System.out.println("Producto a eliminar ?");
+		String name = sc.next();
+		Product product = findProduct(name);
+
+		if (product != null) {
+			inventory.remove(product);
+			System.out.println("Producto eliminado: " + name);
+		} else {
+			System.out.println("sin resultadi  " + name);
+		}
+	}
+
+	
+	
+	//DELETE PRODUCT 
+	//data base 
+	public void deleteProduct(Product product ) {
+		dao.deleteProduct(product);
+	}
+	
 
 	/**
 	 * find product by name

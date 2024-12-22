@@ -1,41 +1,35 @@
 package view;
 
 import java.awt.EventQueue;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import main.Shop;
-import utils.Constants;
-
-import javax.swing.JLabel;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JOptionPane; 
-import java.awt.Font;
-import javax.swing.SwingConstants;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.ActionEvent;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+import main.Shop;
+import model.Product;
+
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 public class ShopView extends JFrame implements ActionListener, KeyListener {
 
     private static final long serialVersionUID = 1L;
-    private Shop shop;
-
     private JPanel contentPane;
-    private JButton btnShowCash;
-    private JButton btnAddProduct;
-    private JButton btnAddStock;
-    private JButton btnRemoveProduct;
-    private JButton btnExportInventory; 
-    public Shop getShop() {
-        return shop;
-    }
-
-    public void setShop(Shop shop) {
-        this.shop = shop;
-    }
+    private JButton showCashButton;
+    private JButton addProductButton;
+    private JButton addStockButton;
+    private JButton deleteProductButton;
+    private Shop shop;
+    private JTextField txtGeneratingPixels;
+    private JButton exportInventoryButton;
 
     /**
      * Launch the application.
@@ -57,163 +51,133 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
      * Create the frame.
      */
     public ShopView() {
-        setTitle("MiTenda.com - Menu principal");
-        // listen key
-        addKeyListener(this);
-        setFocusable(true);
-        setFocusTraversalKeysEnabled(false);
-
-        // create shop
-        shop = new Shop();
+        this.shop = new Shop();
+        
         shop.loadInventory();
+       
+        shop.showInventory();
 
+        setFocusable(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 600, 600);
+        setBounds(300, 200, 450, 300);
+        
+       
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
         setContentPane(contentPane);
-        contentPane.setLayout(null);
+        
+      
+        contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS)); 
 
-        JLabel lblShowCash = new JLabel("Seleccione o pulse una opción:");
-        lblShowCash.setFont(new Font("Tahoma", Font.PLAIN, 15));
-        lblShowCash.setBounds(57, 20, 236, 14);
-        contentPane.add(lblShowCash);
+       
+        JLabel optionLabel = new JLabel("Select an option:");
+        optionLabel.setAlignmentX(CENTER_ALIGNMENT); 
+        contentPane.add(optionLabel);
 
-        // option count cash
-        btnShowCash = new JButton("1. Contar caja");
-        btnShowCash.setHorizontalAlignment(SwingConstants.LEFT);
-        btnShowCash.setFont(new Font("Tahoma", Font.PLAIN, 15));
-        btnShowCash.setBounds(99, 40, 236, 40);
-        contentPane.add(btnShowCash);
-        // listen button
-        btnShowCash.addActionListener(this);
+        
+        exportInventoryButton = new JButton("0. Export Inventory");
+        exportInventoryButton.setAlignmentX(CENTER_ALIGNMENT); 
+        contentPane.add(exportInventoryButton);
 
-        // option add product
-        btnAddProduct = new JButton("2. Añadir producto");
-        btnAddProduct.setHorizontalAlignment(SwingConstants.LEFT);
-        btnAddProduct.setFont(new Font("Tahoma", Font.PLAIN, 15));
-        btnAddProduct.setBounds(99, 90, 236, 40);
-        contentPane.add(btnAddProduct);
-        // listen button
-        btnAddProduct.addActionListener(this);
+        
+        showCashButton = new JButton("1. Contar Caja");
+        showCashButton.setAlignmentX(CENTER_ALIGNMENT); 
+        contentPane.add(showCashButton);
 
-        // option add stock
-        btnAddStock = new JButton("3. Añadir stock");
-        btnAddStock.setHorizontalAlignment(SwingConstants.LEFT);
-        btnAddStock.setFont(new Font("Tahoma", Font.PLAIN, 15));
-        btnAddStock.setBounds(99, 140, 236, 40);
-        contentPane.add(btnAddStock);
-        // listen button
-        btnAddStock.addActionListener(this);
+        
+        addProductButton = new JButton("2. Añadir Product");
+        addProductButton.setAlignmentX(CENTER_ALIGNMENT); 
+        contentPane.add(addProductButton);
 
-        // option remove product
-        btnRemoveProduct = new JButton("9. Eliminar producto");
-        btnRemoveProduct.setHorizontalAlignment(SwingConstants.LEFT);
-        btnRemoveProduct.setFont(new Font("Tahoma", Font.PLAIN, 15));
-        btnRemoveProduct.setBounds(99, 190, 236, 40);
-        contentPane.add(btnRemoveProduct);
-        // listen button
-        btnRemoveProduct.addActionListener(this);
+       
+        addStockButton = new JButton("3. Añadir Stock");
+        addStockButton.setAlignmentX(CENTER_ALIGNMENT); 
+        contentPane.add(addStockButton);
 
-        // option export inventory
-        btnExportInventory = new JButton("0. Exportar Inventario"); // Nuevo botón
-        btnExportInventory.setHorizontalAlignment(SwingConstants.LEFT);
-        btnExportInventory.setFont(new Font("Tahoma", Font.PLAIN, 15));
-        btnExportInventory.setBounds(99, 240, 236, 40);
-        contentPane.add(btnExportInventory);
-        // listen button
-        btnExportInventory.addActionListener(this);
+        
+        deleteProductButton = new JButton("9. Eliminar producto");
+        deleteProductButton.setAlignmentX(CENTER_ALIGNMENT);
+        contentPane.add(deleteProductButton);
+
+       
+        
+        exportInventoryButton.addActionListener(this);
+        showCashButton.addActionListener(this);
+        addProductButton.addActionListener(this);
+        addStockButton.addActionListener(this);
+        deleteProductButton.addActionListener(this);
+
+        this.addKeyListener(this); 
+    }
+
+    // Method to export the inventory
+    public void exportInventory() {
+        if (!shop.writeInventory()) {
+            JOptionPane.showMessageDialog(this, "Error exportando.", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Inventorio exportado ", " ", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    
+    public void openCashView() {
+        CashView cashView = new CashView(shop);
+        cashView.setVisible(true);
+    }
+
+    
+    public void openProductView(int option) {
+        ProductView productView = new ProductView(option, shop);
+        productView.setVisible(true);
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
-        // TODO Auto-generated method stub
+        // No action on keyTyped
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-        // TODO Auto-generated method stub
-        if (e.getKeyChar() == '1') {
-            this.openCashView();
-        }
-        if (e.getKeyChar() == '2') {
-            this.openProductView(Constants.OPTION_ADD_PRODUCT);
-        }
-        if (e.getKeyChar() == '3') {
-            this.openProductView(Constants.OPTION_ADD_STOCK);
-        }
-        if (e.getKeyChar() == '9') {
-            this.openProductView(Constants.OPTION_REMOVE_PRODUCT);
-        }
-        if (e.getKeyChar() == '0') { 
-            this.exportInventory();
+        int key = e.getKeyCode();
+
+       
+        switch (key) {
+            case KeyEvent.VK_0:
+                exportInventory();
+                break;
+            case KeyEvent.VK_1:
+                openCashView();
+                break;
+            case KeyEvent.VK_2:
+                openProductView(2);
+                break;
+            case KeyEvent.VK_3:
+                openProductView(3);
+                break;
+            case KeyEvent.VK_9:
+                openProductView(9);
+                break;
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        // TODO Auto-generated method stub
+        // No action on keyReleased
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        // TODO Auto-generated method stub
-        if (e.getSource() == btnShowCash) {
-            this.openCashView();
+    public void actionPerformed(ActionEvent interactionButtons) {
+       
+        if (interactionButtons.getSource() == showCashButton) {
+            openCashView();
+        } else if (interactionButtons.getSource() == addProductButton) {
+            openProductView(2);
+        } else if (interactionButtons.getSource() == addStockButton) {
+            openProductView(3);
+        } else if (interactionButtons.getSource() == deleteProductButton) {
+            openProductView(9);
+        } else if (interactionButtons.getSource() == exportInventoryButton) {
+            exportInventory();
         }
-        if (e.getSource() == btnAddProduct) {
-            this.openProductView(Constants.OPTION_ADD_PRODUCT);
-        }
-        if (e.getSource() == btnAddStock) {
-            this.openProductView(Constants.OPTION_ADD_STOCK);
-        }
-        if (e.getSource() == btnRemoveProduct) {
-            this.openProductView(Constants.OPTION_REMOVE_PRODUCT);
-        }
-        if (e.getSource() == btnExportInventory) { 
-            this.exportInventory();
-        }
-    }
-
-    /**
-     * Método para exportar inventario
-     */
-    public void exportInventory() {
-        boolean success = shop.writeInventory(); 
-        if (success) {
-         
-            JOptionPane.showMessageDialog(this, "Inventario exportado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            
-            JOptionPane.showMessageDialog(this, "Hubo un problema al exportar el inventario.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    /**
-     * open dialog to show shop cash
-     */
-    public void openCashView() {
-        // create a dialog Box
-        CashView dialog = new CashView(shop);
-        // set size of dialog
-        dialog.setSize(400, 400);
-        // set visibility of dialog
-        dialog.setModal(true);
-        dialog.setVisible(true);
-    }
-
-    /**
-     * open dialog to add/remove/stock product
-     */
-    public void openProductView(int option) {
-        // create a dialog Box
-        ProductView dialog = new ProductView(shop, option);
-        // set size of dialog
-        dialog.setSize(400, 400);
-        // set visibility of dialog
-        dialog.setModal(true);
-        dialog.setVisible(true);
     }
 }
-
