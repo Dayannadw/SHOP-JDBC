@@ -7,8 +7,7 @@ import model.Client;
 import model.Employee;
 import dao.Dao;
 import dao.DaoImplJDBC;
-import xml.DomWriter;
-import xml.SaxReader;
+
 import java.lang.Exception; 
 import java.io.BufferedReader;
 import java.io.File;
@@ -579,11 +578,7 @@ public class Shop {
 	}
 	
 
-	/**
-	 * find product by name
-	 * 
-	 * @param product name
-	 */
+	//Pdroduct
 	public Product findProduct(String name) {
 		for (int i = 0; i < inventory.size(); i++) {
 			if (inventory.get(i) != null && inventory.get(i).getName().equalsIgnoreCase(name)) {
