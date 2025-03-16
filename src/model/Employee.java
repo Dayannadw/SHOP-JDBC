@@ -7,11 +7,18 @@ public class Employee extends Person implements Logable{
 	private int employeeId;
 	private String password;
 	// connection using JDBC SQL
-	private Dao dao = new DaoImplJDBC();
+	private Dao dao = new DaoImplMongoDB();
 	
 //	public static final int USER = 123;
 //	public static final String PASSWORD = "test";
-	
+
+
+	//constructor for mongodb
+	public Employee(int employeeId, String password) {
+		this.employeeId = employeeId;
+		this.password = password;
+	}
+
 	public Employee(String name) {
 		super(name);
 	}
@@ -55,11 +62,11 @@ public class Employee extends Person implements Logable{
 	}
 
 	/**
-	 * @param user from application, password from application
+	 * @param employeeId from application, password from application
 	 * @return true if credentials are correct or false if not
 	 */
 	@Override
-	public boolean login(int user, String password) {
+	public boolean login(int employeeId, String password) {
 //		if (USER == user && PASSWORD.equals(password)) {
 //			return true;
 //		} 
@@ -69,7 +76,7 @@ public class Employee extends Person implements Logable{
 		dao.connect();
 		
 		// get employee data
-		if(dao.getEmployee(user, password) != null) {
+		if(dao.getEmployee(employeeId, password) != null) {
 			success =  true;
 		}
 		

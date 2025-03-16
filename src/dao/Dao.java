@@ -19,12 +19,14 @@ public interface Dao {
 	
 	public boolean writeInventory(ArrayList<Product> products);
 
-	void  updateProduct(Product product);
+	boolean  updateProduct(Product product);
 
 	void deleteProduct(Product product);
 
-	void addProduct(Product product); 
-	
+	void addProduct(Product product);
+
+	public boolean deleteProductInventory(String name);
+
 }
 	
 

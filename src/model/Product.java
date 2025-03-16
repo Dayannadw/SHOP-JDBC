@@ -5,7 +5,7 @@ import java.util.Objects;
 public class Product {
     private static final double EXPIRATION_RATE = 0.60;
     private static int totalProducts = 0;
-    
+
     private int id;
     private String name;
     private Amount publicPrice;
@@ -14,21 +14,19 @@ public class Product {
     private int stock;
 
     public Product() {
-       
+        // Constructor vacío
     }
 
+    public Product(String name, double wholesalerPrice, double publicPrice, boolean available, int stock) {
+        this.id = totalProducts + 1;
+        this.name = name;
+        this.wholesalerPrice = new Amount(wholesalerPrice);
+        this.publicPrice = new Amount(publicPrice);
+        this.available = available;
+        this.stock = stock;
+        totalProducts++;
+    }
 
-	public Product(String name, double wholesalerPrice, double publicPrice, boolean available, int stock) {
-		super();
-		this.id = totalProducts + 1;
-		this.name = name;
-		this.wholesalerPrice = new Amount(wholesalerPrice);
-		this.publicPrice = new Amount(publicPrice);
-		this.available = available;
-		this.stock = stock;
-		totalProducts++;
-	}
-	
     public Product(int id, String name, double wholesalerPrice, boolean available, int stock) {
         if (name == null || wholesalerPrice < 0) {
             throw new IllegalArgumentException("Invalid product parameters");
@@ -43,6 +41,27 @@ public class Product {
         this.publicPrice = new Amount(wholesalerPrice * 2);
         this.available = available;
         this.stock = stock;
+        totalProducts++;
+    }
+
+    // Constructor para MongoDB
+    public Product(String name, Amount wholesalerPrice, int stock, boolean available) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be null or empty");
+        }
+        if (wholesalerPrice == null) {
+            throw new IllegalArgumentException("Wholesaler price cannot be null");
+        }
+        if (stock < 0) {
+            throw new IllegalArgumentException("Stock cannot be negative");
+        }
+
+        this.id = totalProducts + 1;
+        this.name = name;
+        this.wholesalerPrice = new Amount(wholesalerPrice.getValue());
+        this.publicPrice = new Amount(wholesalerPrice.getValue() * 2);
+        this.stock = stock;
+        this.available = available;
         totalProducts++;
     }
 
@@ -132,11 +151,11 @@ public class Product {
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
         return id == product.id &&
-               available == product.available &&
-               stock == product.stock &&
-               Objects.equals(name, product.name) &&
-               Objects.equals(publicPrice, product.publicPrice) &&
-               Objects.equals(wholesalerPrice, product.wholesalerPrice);
+                available == product.available &&
+                stock == product.stock &&
+                Objects.equals(name, product.name) &&
+                Objects.equals(publicPrice, product.publicPrice) &&
+                Objects.equals(wholesalerPrice, product.wholesalerPrice);
     }
 
     @Override

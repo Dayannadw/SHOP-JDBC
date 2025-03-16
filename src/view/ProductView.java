@@ -14,6 +14,8 @@ import javax.swing.border.EmptyBorder;
 import main.Shop;
 import model.Product;
 
+
+
 public class ProductView extends JDialog implements ActionListener {
 
     private static final long serialVersionUID = 1L;
@@ -32,7 +34,7 @@ public class ProductView extends JDialog implements ActionListener {
     public ProductView(int option, Shop shop) {
         this.option = option;
         this.shop = shop;
-        
+
         setBounds(100, 100, 450, 300);
         getContentPane().setLayout(new BorderLayout());
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -59,7 +61,7 @@ public class ProductView extends JDialog implements ActionListener {
         stockTextField.setColumns(10);
 
         priceLabel = new JLabel("Precio:");
-        priceLabel.setBounds(92, 125, 134, 13);  
+        priceLabel.setBounds(92, 125, 134, 13);
         contentPanel.add(priceLabel);
 
         priceTextField = new JTextField();
@@ -67,10 +69,10 @@ public class ProductView extends JDialog implements ActionListener {
         contentPanel.add(priceTextField);
         priceTextField.setColumns(10);
 
-        
+
         selectOption(option);
 
-     
+
         JPanel buttonPane = new JPanel();
         buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
         getContentPane().add(buttonPane, BorderLayout.SOUTH);
@@ -89,16 +91,16 @@ public class ProductView extends JDialog implements ActionListener {
         }
     }
 
-    
+
     public void selectOption(int option) {
         if (option == 2) {
-            
+
         } else if (option == 3) {
-            
+
             priceLabel.setVisible(false);
             priceTextField.setVisible(false);
         } else if (option == 9) {
-           
+
             priceLabel.setVisible(false);
             priceTextField.setVisible(false);
             stockLabel.setVisible(false);
@@ -122,9 +124,9 @@ public class ProductView extends JDialog implements ActionListener {
         }
     }
 
-    
-    
-    //ADD PRODUCT 
+
+
+    //ADD PRODUCT
     public void addProduct() {
         try {
             String productName = productTextField.getText();
@@ -162,21 +164,24 @@ public class ProductView extends JDialog implements ActionListener {
             JOptionPane.showMessageDialog(this, "Error.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
-    //DELETE 
+
+    //DELETE
     public void deleteProduct() {
         try {
             String productName = productTextField.getText();
+
+            // Buscar el producto en la lista en memoria
             Product product = shop.findProduct(productName);
 
             if (product != null) {
+                // Eliminar el producto
                 shop.deleteProduct(product);
-                shop.showInventory();
+                JOptionPane.showMessageDialog(this, "Producto eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(this, "Producto no existe", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Producto no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
             }
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Error.", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al eliminar el producto.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 }
